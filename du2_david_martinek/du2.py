@@ -35,7 +35,13 @@ try:
         #Cyklus čte vstup po řádcích. Na každém řádku si sčítá hodnoty průtoků a upravuje proměnné
         #Pokud cyklus vyhodnotí, že již nasbíral hodnoty za po sobě jdoucích sedm dní nebo rok, tak je zapíše do výstupu 
         for row in reader:
-            cteny_radek += 1
+            try:
+                cteny_radek += 1
+                value_tester = float(row[5])
+            except ValueError:
+                continue
+            except IndexError:
+                continue
             if den_7 == 0:
                 prvni_radek_7 = row
             try:
@@ -69,7 +75,6 @@ try:
                 den_rok -= 1
             except IndexError:
                 print("Řádek",cteny_radek,"chybí nebo hodnoty v něm jsou příliš dlouhé.")
-
 
         #Vyhodnocení a zápis průtoků, které nezapsal cyklus výše
         if den_7 != 0:
