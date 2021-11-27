@@ -71,6 +71,6 @@ with open("Data_Libechovka.csv", encoding="utf-8") as csvinfile,\
         zapis(prumer_7,den_7,prvni_radek_7,writer7)
     zapis(prumer_rok,den_rok,prvni_radek_rok,writerrok)
 
-    #Výpis největšího a nejmenšjího průtoku
+    #Výpis největšího a nejmenšího průtoku
     print(f"{radek_max[4]}.{radek_max[3]}.{radek_max[2]} byl naměřen největší průtok o hodnotě {radek_max[5]}.")
     print(f"{radek_min[4]}.{radek_min[3]}.{radek_min[2]} byl naměřen nejmenší průtok o hodnotě    {radek_min[5]}.")
