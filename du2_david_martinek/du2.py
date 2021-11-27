@@ -29,7 +29,7 @@ try:
         den_rok = 0
         prumer_rok = 0
         den_max = 0
-        den_min = 1000000
+        den_min = float('inf')
         cteny_radek = 0
 
         #Cyklus čte vstup po řádcích. Na každém řádku si sčítá hodnoty průtoků a upravuje proměnné
@@ -65,8 +65,11 @@ try:
             #Ošetřování výjimek, které se naskytly při testování
             except ValueError:
                 print("V souboru je na řádku",cteny_radek,"chybná nebo žádná hodnota.")
+                den_7 -= 1
+                den_rok -= 1
             except IndexError:
                 print("Řádek",cteny_radek,"chybí nebo hodnoty v něm jsou příliš dlouhé.")
+
 
         #Vyhodnocení a zápis průtoků, které nezapsal cyklus výše
         if den_7 != 0:
