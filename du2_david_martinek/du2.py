@@ -15,9 +15,9 @@ def zapis(prumer,den,radek, writer):
 #Ošetření existence vstupu ve složce    
 try:
 #Otevření a čtení vstupu, definice výstupu
-    with open("Data_Libechovka.csv", encoding="utf-8") as csvinfile,\
-        open("Libechovka_prutoky_7.csv", "w", newline="", encoding="utf-8") as csvoutfile7,\
-        open("Libechovka_prutoky_rok.csv", "w", newline="", encoding="utf-8") as csvoutfilerok:
+    with open("vstup.csv", encoding="utf-8") as csvinfile,\
+        open("vystup_7dni.csv", "w", newline="", encoding="utf-8") as csvoutfile7,\
+        open("vystup_rok.csv", "w", newline="", encoding="utf-8") as csvoutfilerok:
         reader = csv.reader(csvinfile, delimiter =",")
         writer7 = csv.writer(csvoutfile7)
         writerrok = csv.writer(csvoutfilerok)
