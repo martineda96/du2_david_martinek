@@ -9,6 +9,8 @@ def zapis(prumer,den,radek, writer):
         writer.writerow(radek)
     except ZeroDivisionError:
         pass
+    except IndexError:
+        pass
     
 #Ošetření existence vstupu ve složce    
 try:
