@@ -1,15 +1,19 @@
 import csv
+
 #Domácí úkol 2 - průměrné sedmidenní a roční průtoky
-#Definice funkce pro zápis dat
+#Definice funkce pro zápis dat (použitá výjimka umožňuje chod programu, reálně v cyklu nemůže nastat)
 def zapis(prumer,den,radek, writer):
-    prumer /= den
-    radek[5] = "{0:.4f}".format(prumer)
-    writer.writerow(radek)
+    try:
+        prumer /= den
+        radek[5] = "{0:.4f}".format(prumer)
+        writer.writerow(radek)
+    except ZeroDivisionError:
+        pass
 
 #Otevření a čtení vstupu, definice výstupu
 with open("Data_Libechovka.csv", encoding="utf-8") as csvinfile,\
-     open("test_out7.csv", "w", newline="", encoding="utf-8") as csvoutfile7,\
-     open("test_out365.csv", "w", newline="", encoding="utf-8") as csvoutfilerok:
+     open("Libechovka_prutoky_7.csv", "w", newline="", encoding="utf-8") as csvoutfile7,\
+     open("Libechovka_prutoky_rok.csv", "w", newline="", encoding="utf-8") as csvoutfilerok:
     reader = csv.reader(csvinfile, delimiter =",")
     writer7 = csv.writer(csvoutfile7)
     writerrok = csv.writer(csvoutfilerok)
@@ -22,35 +26,45 @@ with open("Data_Libechovka.csv", encoding="utf-8") as csvinfile,\
     prumer_rok = 0
     den_max = 0
     den_min = 1000000
+    cteny_radek = 0
 
     #Cyklus čte vstup po řádcích. Na každém řádku si sčítá hodnoty průtoků a upravuje proměnné
     #Pokud cyklus vyhodnotí, že již nasbíral hodnoty za po sobě jdoucích sedm dní nebo rok, tak je zapíše do výstupu 
     for row in reader:
+        cteny_radek += 1
         if den_7 == 0:
             prvni_radek_7 = row
-        den_7 += 1
-        prumer_7 += float(row[5])
-        if den_7 == 7:
-            zapis(prumer_7,den_7,prvni_radek_7,writer7)
-            den_7 = 0
-            prumer_7 = 0
-        if aktualni_rok != row[2]:
-            aktualni_rok = row[2]
-            if den_rok != 0:
-                zapis(prumer_rok,den_rok,prvni_radek_rok,writerrok)
-                den_rok = 0
-                prumer_rok = 0
-            prvni_radek_rok = row
-        den_rok += 1
-        prumer_rok += float(row[5])
+        try:
+            den_7 += 1
+            prumer_7 += float(row[5])
+            if den_7 == 7:
+                zapis(prumer_7,den_7,prvni_radek_7,writer7)
+                den_7 = 0
+                prumer_7 = 0
+            if aktualni_rok != row[2]:
+                aktualni_rok = row[2]
+                if den_rok != 0:
+                    zapis(prumer_rok,den_rok,prvni_radek_rok,writerrok)
+                    den_rok = 0
+                    prumer_rok = 0
+                prvni_radek_rok = row
+            den_rok += 1
+            prumer_rok += float(row[5])
 
-        #Vyhodnocení maximálního a minimálního průtoku
-        if float(row[5]) > den_max:
-            den_max = float(row[5])
-            radek_max = row
-        if float(row[5]) < den_min:
-            den_min = float(row[5])
-            radek_min = row
+            #Vyhodnocení maximálního a minimálního průtoku
+            if float(row[5]) > den_max:
+                den_max = float(row[5])
+                radek_max = row
+            if float(row[5]) < den_min:
+                den_min = float(row[5])
+                radek_min = row
+        #Ošetřování výjimek, které se naskytly při testování
+        except ValueError:
+            print("V souboru je na řádku",cteny_radek,"chybná nebo žádná hodnota.")
+        except IndexError:
+            print("Řádek",cteny_radek,"chybí nebo hodnoty v něm jsou příliš dlouhé.")
+        except IndentationError:
+            print("Nastala chyba na řádku,",cteny_radek,".")
 
     #Vyhodnocení a zápis průtoků, které nezapsal cyklus výše
     if den_7 != 0:
@@ -58,5 +72,5 @@ with open("Data_Libechovka.csv", encoding="utf-8") as csvinfile,\
     zapis(prumer_rok,den_rok,prvni_radek_rok,writerrok)
 
     #Výpis největšího a nejmenšjího průtoku
-    print(f"{radek_max[4]}.{radek_max[3]}.{radek_max[2]} byl naměřen nejvyšší průtok o hodnotě {radek_max[5]}")
-    print(f"{radek_min[4]}.{radek_min[3]}.{radek_min[2]} byl naměřen nejvyšší průtok o hodnotě {radek_min[5]}")
+    print(f"{radek_max[4]}.{radek_max[3]}.{radek_max[2]} byl naměřen největší průtok o hodnotě {radek_max[5]}.")
+    print(f"{radek_min[4]}.{radek_min[3]}.{radek_min[2]} byl naměřen nejmenší průtok o hodnotě    {radek_min[5]}.")
